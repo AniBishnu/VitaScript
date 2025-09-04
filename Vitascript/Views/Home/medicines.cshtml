@@ -1,0 +1,47 @@
+﻿@model List<Vitascript.Models.BrandedMedicine>
+@{
+    ViewBag.Title = "medicines";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Home CSS/Doctors.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<div class="DivBody">
+
+    <div class="filter-dropdown">
+        <label for="filterSelect"></label>
+    </div>
+
+    <div class="header-wrapper">
+        <h2>All Branded Medicines</h2>
+    </div>
+
+    <div class="patient-list" id="medList">
+        <table class="patient-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Medicine Name</th>
+                    <th>Brand</th>
+                    <th>Generic name</th>
+                    <th>MRP (Taka)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var med in Model)
+                {
+                    <tr data-brand="@med.Brand.Name">
+                        <td>@med.Id</td>
+                        <td>@med.MedicineName</td>
+                        <td>@med.Brand.Name</td>
+                        <td>@med.GenericMedicine.Name</td>
+                        <td>@med.MRP.ToString("0.00")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

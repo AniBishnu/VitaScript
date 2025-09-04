@@ -1,0 +1,45 @@
+﻿@model Vitascript.Models.User
+
+@{
+    ViewBag.Title = "DProfile";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Profile.css" />
+
+
+<div class="MainWrapper">
+    <div class="NavdivWrapper">
+        <a href="@Url.Action("Index", "Doctor")">Home</a>
+        <a href="@Url.Action("MyPatients", "Doctor")">My patients</a>
+        <a href="@Url.Action("PrescriptionList", "Doctor")">Prescriptions</a>
+        <a href="@Url.Action("DProfile", "Doctor")">Profile</a>
+    </div>
+
+    <div class="DivBody">
+        <div class="profile-container">
+            <div class="profile-left">
+                <i class="fas fa-user-doctor fa-10x doctor-icon"></i>
+            </div>
+
+            <div class="profile-right">
+                <div class="profile-header">
+                    <div>
+                        <h1 class="doctor-name">@Model.Name</h1>
+                        <h4 class="doctor-specialty">@Model.DoctorType.Name</h4>
+                        
+                    </div>
+                </div>
+                <hr />
+                <div class="doctor-info">
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>DOB:</strong> @Model.DOB.ToString("yyyy-MM-dd")</p>
+                    <p><strong>Phone:</strong> @Model.Phone</p>
+                    <p><strong>Address:</strong> @Model.Address, @Model.City</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

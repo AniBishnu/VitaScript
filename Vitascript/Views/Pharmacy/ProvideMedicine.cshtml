@@ -1,0 +1,211 @@
+﻿@model Vitascript.ViewModel.ProvideMedicineVM
+@{
+    ViewBag.Title = "ProvideMedicine";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Pharmacy")">Home</a>
+            <a href="@Url.Action("SellMedicine", "Pharmacy")">Sell Medicines</a>
+            <a href="@Url.Action("Inventory", "Pharmacy")">Inventory</a>
+            <a href="@Url.Action("Sales", "Pharmacy")">Sales</a>
+            <a href="@Url.Action("PharmacyProfile", "Pharmacy")">Profile</a>
+        </div>
+        <div class="DivBody">
+            <div class="filter-dropdown">
+
+            </div>
+            <h2 style="text-align:center; font-weight:700;">Medicine Cart</h2>
+            <h3 style="text-align:center;">Prescription Code: @Model.PrescriptionCode</h3>
+
+            <p style="font-weight:600;">Patient Name: @Model.PatientName</p>
+
+            <table class="patient-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Medicine Name (Generic name)</th>
+                        <th>Medicine Name (Branded name)</th>
+                        <th>Brand Name</th>
+                        <th>Price (Taka)</th>
+                        <th>Quantity</th>
+                        <th>Total (Taka)</th>
+                    </tr>
+                </thead>
+                <tbody id="medicineCart">
+                    @for (int i = 0; i < Model.Medicines.Count; i++)
+                    {
+                        var med = Model.Medicines[i];
+                        <tr data-index="@i" data-remaining="@med.RemainingQuantity">
+                            <td>@med.PrescribedMedicineId</td>
+                            <td>@med.GenericName</td>
+                            <td class="filter-dropdown">
+                                <select class="branded-select">
+                                    <option disabled selected>Select</option>
+                                    @foreach (var option in med.BrandedOptions)
+                                    {
+                                        <option value="@option.Id"
+                                                data-brand="@option.BrandName"
+                                                data-price="@option.Price"
+                                                data-available="@option.QuantityAvailable">
+                                            @option.Name
+                                        </option>
+                                    }
+                                </select>
+                            </td>
+                            <td class="brand-name"></td>
+                            <td class="price"></td>
+                            <td>
+                                <button class="decrement">-</button>
+                                <input type="text" class="quantity" value="@med.RemainingQuantity" readonly style="width: 30px; text-align:center;" />
+                                <button class="increment">+</button>
+                            </td>
+                            <td class="row-total">0</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <h4 style="text-align:right; margin-top:10px;">Grand Total: <span id="grandTotal">0</span> Taka</h4>
+
+            <div style="text-align:right;">
+                @using (Html.BeginForm("PayBill", "Pharmacy", FormMethod.Post))
+                {
+                    <input type="hidden" name="PrescriptionId" value="@Model.PrescriptionId" />
+                    <input type="hidden" name="PatientId" value="@Model.patientID" />
+                    <div id="hiddenCartData"></div>
+
+                    <div style="text-align:right;">
+                        <button type="submit" class="action-button">Next</button>
+                    </div>
+                }
+
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+<style>
+    .action-button {
+        background-color: #fca311;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    function updateRowTotal(row) {
+        const price = parseFloat(row.querySelector('.price').innerText) || 0;
+        const quantity = parseInt(row.querySelector('.quantity').value);
+        const total = price * quantity;
+        row.querySelector('.row-total').innerText = total.toFixed(2);
+        updateGrandTotal();
+    }
+
+    function updateGrandTotal() {
+        let total = 0;
+        document.querySelectorAll('.row-total').forEach(td => {
+            total += parseFloat(td.innerText) || 0;
+        });
+        document.getElementById('grandTotal').innerText = total.toFixed(2);
+    }
+
+    document.querySelectorAll('.branded-select').forEach(select => {
+        select.addEventListener('change', function () {
+            const row = this.closest('tr');
+            const selectedOption = this.selectedOptions[0];
+
+            const brandName = selectedOption.dataset.brand;
+            const price = selectedOption.dataset.price;
+            const availableQty = parseInt(selectedOption.dataset.available); // from inventory
+            const prescribedQty = parseInt(row.dataset.remaining); // from prescription
+
+            const maxQty = Math.min(prescribedQty, availableQty); 
+
+            row.querySelector('.brand-name').innerText = brandName;
+            row.querySelector('.price').innerText = price;
+
+            // Store maxQty in select element for later use
+            this.dataset.max = maxQty;
+
+            // Reset quantity
+            row.querySelector('.quantity').value = maxQty;
+
+            updateRowTotal(row);
+        });
+    });
+
+
+
+    document.querySelectorAll('.increment').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const row = this.closest('tr');
+            const quantityInput = row.querySelector('.quantity');
+            const currentQty = parseInt(quantityInput.value);
+
+            const select = row.querySelector('.branded-select');
+            const maxQty = parseInt(select.dataset.max); 
+
+            if (isNaN(maxQty)) {
+                alert("Please select a branded medicine first.");
+                return;
+            }
+
+            if (currentQty < maxQty) {
+                quantityInput.value = currentQty + 1;
+                updateRowTotal(row);
+            }
+        });
+    });
+
+
+    document.querySelectorAll('.decrement').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const row = this.closest('tr');
+            const quantityInput = row.querySelector('.quantity');
+            const currentQty = parseInt(quantityInput.value);
+
+            if (currentQty > 0) {
+                quantityInput.value = currentQty - 1;
+                updateRowTotal(row);
+            }
+        });
+    });
+
+    document.querySelector("form").addEventListener("submit", function (e) {
+        const hiddenCart = document.getElementById("hiddenCartData");
+        hiddenCart.innerHTML = ""; // Clear previous
+
+        document.querySelectorAll("#medicineCart tr").forEach(row => {
+            const brandedSelect = row.querySelector(".branded-select");
+            const selectedOption = brandedSelect.selectedOptions[0];
+            if (!selectedOption) return;
+
+            const prescribedId = row.cells[0].innerText.trim();
+            const genericName = row.cells[0].innerText;
+            const brandedName = selectedOption.text;
+            const unitPrice = selectedOption.dataset.price;
+            const quantity = row.querySelector(".quantity").value;
+
+            hiddenCart.innerHTML += `
+            <input type="hidden" name="CartItems.Index" value="${prescribedId}" />
+            <input type="hidden" name="CartItems[${prescribedId}].PrescribedMedicineId" value="${prescribedId}" />
+            <input type="hidden" name="CartItems[${prescribedId}].BrandedName" value="${brandedName}" />
+            <input type="hidden" name="CartItems[${prescribedId}].GenericName" value="${genericName}" />
+            <input type="hidden" name="CartItems[${prescribedId}].Quantity" value="${quantity}" />
+            <input type="hidden" name="CartItems[${prescribedId}].UnitPrice" value="${unitPrice}" />
+             <input type="hidden" name="CartItems[${prescribedId}].BrandedMedicineId" value="${selectedOption.value}" />
+        `;
+        });
+    });
+</script>

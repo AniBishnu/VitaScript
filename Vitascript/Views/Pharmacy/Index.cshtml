@@ -1,0 +1,144 @@
+﻿@model Vitascript.ViewModel.PharmacyDashboardVM
+@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="~/Content/Doctor CSS/Index.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Pharmacy")">Home</a>
+            <a href="@Url.Action("SellMedicine", "Pharmacy")">Sell Medicines</a>
+            <a href="@Url.Action("Inventory", "Pharmacy")">Inventory</a>
+            <a href="@Url.Action("Sales", "Pharmacy")">Sales</a>
+            <a href="@Url.Action("PharmacyProfile", "Pharmacy")">Profile</a>
+        </div>
+        <div class="DivBody">
+            <h2 class="topHeader">Welcome,  @Model.User.Name</h2>
+
+
+
+            <div class="dashboard-cards">
+                <div class="card">
+                    <h3>@Model.TotalSales Taka</h3>
+                    <p>Total sales</p>
+                </div>
+                <div class="card">
+                    <h3>@Model.TotalMedicines</h3>
+                    <p>Total medicine types</p>
+                </div>
+                <div class="card">
+                    <h3>@Model.TotalMonthlySales .00 Taka</h3>
+                    <p>Total sales of this month</p>
+                </div>
+            </div>
+
+            <div class="dashboard-charts" style="display:flex; gap:40px; flex-wrap: wrap;">
+                <div class="chart-placeholder" style="flex:1; min-width:300px;">
+                    <h4>Monthly Sales (Date-wise)</h4>
+                    <canvas id="monthlySalesChart"></canvas>
+                </div>
+
+                <div class="chart-placeholder" style="flex:1; min-width:300px;">
+                    <h4>Medicine Trend (Most Sold)</h4>
+                    <canvas id="medicineTrendChart" width="500" height="500"></canvas>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</body>
+
+
+<script>
+        const monthlyCtx = document.getElementById('monthlySalesChart').getContext('2d');
+
+new Chart(monthlyCtx, {
+    type: 'bar',
+    data: {
+        labels: @Html.Raw(JsonConvert.SerializeObject(
+            Model.DailySales.Select(ds => ds.Date.ToString("yyyy-MM-dd")).ToList()
+        )),
+        datasets: [{
+            label: 'Date-wise Sales in Taka',
+            data: @Html.Raw(JsonConvert.SerializeObject(
+                Model.DailySales.Select(ds => ds.TotalSales).ToList()
+            )),
+            backgroundColor: '#fca311',
+            borderColor: '#04091e',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return '৳' + value;
+                    }
+                }
+            },
+            x: {
+                ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 10
+                }
+            }
+        }
+    }
+});
+
+const medicineCtx = document.getElementById('medicineTrendChart').getContext('2d');
+
+new Chart(medicineCtx, {
+    type: 'pie',
+    data: {
+        labels: @Html.Raw(JsonConvert.SerializeObject(
+            Model.MostSoldMedicines.Select(m => m.Name).ToList()
+        )),
+        datasets: [{
+            label: 'Most Sold Medicines',
+            data: @Html.Raw(JsonConvert.SerializeObject(
+                Model.MostSoldMedicines.Select(m => m.TotalSold).ToList()
+            )),
+            backgroundColor: [
+                '#fca311',
+                '#04091e',
+                '#ff6384',
+                '#36a2eb',
+                '#cc65fe',
+                '#ffce56',
+                '#3cba9f',
+                '#e8c3b9',
+                '#c45850'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: false,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: {
+                    boxWidth: 20,
+                    padding: 10
+                }
+            }
+        }
+    }
+});
+
+</script>

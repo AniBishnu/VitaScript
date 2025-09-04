@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Vitascript.Models.MedicineTransaction>
+@{
+    ViewBag.Title = "TransactionDTLs";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Admin")">Home</a>
+
+            <div class="dropdown">
+                <a href="#">Manage Users</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("Users", "Admin")">All Users</a>
+                    <a href="@Url.Action("DoctorTypes", "Admin")">Doctor Types</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">Manage Medicines</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("GenericMedicines", "Admin")">Generic Medicines</a>
+                    <a href="@Url.Action("BrandedMedicines", "Admin")">Branded Medicines</a>
+                    <a href="@Url.Action("Brands", "Admin")">Brands</a>
+                </div>
+            </div>
+
+            <a href="@Url.Action("Prescriptions", "Admin")">Prescriptions</a>
+            <a href="@Url.Action("Transactions", "Admin")">Transactions</a>
+            <a href="@Url.Action("AdminProfile", "Admin")">Profile</a>
+        </div>
+
+        <div class="DivBody">
+
+            <div class="filter-dropdown">
+
+            </div>
+            <div style="text-align:center; font-weight:700;">
+                <h2>TransactionDetails</h2>
+                <h2>
+                    Transaction ID:
+                    @foreach (var transaction in Model)
+                    {@transaction.Payment.TransactionId break;}
+                </h2>
+
+            </div>
+
+            <table class="patient-table">
+                <thead>
+                    <tr>
+                        <th>Generic Name</th>
+                        <th>Branded Name</th>
+                        <th>Brand</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model)
+                    {
+                        var generic = transaction.PrescribedMedicine?.GenericMedicine;
+                        var branded = ViewData[$"branded_{transaction.Id}"] as Vitascript.Models.BrandedMedicine;
+
+                        <tr>
+                            <td>@generic.Name</td>
+                            <td>@branded.MedicineName </td>
+                            <td>@branded.Brand.Name </td>
+                            <td>@transaction.QuantityPurchased</td>
+                            <td>@transaction.Price</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</body>

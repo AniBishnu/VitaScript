@@ -1,0 +1,73 @@
+﻿@model Vitascript.Models.User
+@using Vitascript.ViewModel;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Index.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<div class="MainWrapper">
+    <div class="NavdivWrapper">
+        <a href="@Url.Action("Index", "Patient")">Home</a>
+        <a href="@Url.Action("BookAppointment", "Patient")">Book Appointment</a>
+        <a href="@Url.Action("PrescriptionListPatient", "Patient")">My Prescriptions</a>
+        <a href="@Url.Action("PProfile", "Patient")">Profile</a>
+    </div>
+    <div class="DivBody">
+
+        <h2 class="topHeader">Welcome, @Model.Name</h2>
+
+        <div class="dashboard-cards">
+            <div class="card">
+                <i class="fas fa-user-md"></i>
+                <h3>@ViewBag.DoctorsVisited</h3>
+                <p>Doctors Visited</p>
+            </div>
+            <div class="card">
+                <i class="fas fa-file-medical"></i>
+                <h3>@ViewBag.TotalPrescriptions</h3>
+                <p>Total Prescriptions</p>
+            </div>
+        </div>
+
+        <div class="dashboard-charts">
+            <h4>Upcoming Appointments</h4>
+
+            @if (ViewBag.UpcomingAppointments != null && ((List<PatientDoctorViewModel>)ViewBag.UpcomingAppointments).Count > 0)
+            {
+                <table class="patient-table" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: #f0f4f8;">
+                            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Doctor Name</th>
+                            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Phone</th>
+                            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Email</th>
+                            <th style="padding: 10px; text-align: left; border-bottom: 2px solid #ddd;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var app in (List<PatientDoctorViewModel>)ViewBag.UpcomingAppointments)
+                        {
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="padding: 12px 10px;">@app.DoctorName</td>
+                                <td style="padding: 12px 10px;">@app.DoctorPhone</td>
+                                <td style="padding: 12px 10px;">@app.DoctorEmail</td>
+                                <td style="padding: 12px 10px;">
+                                    <span class="status-badge badge-nonprescribed">Pending</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <p style="color: #777; padding: 15px;">No upcoming appointments.</p>
+            }
+        </div>
+
+
+    </div>
+</div>

@@ -1,0 +1,212 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Home CSS/Home.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+<main>
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Vitascript</h1>
+            <p>Prescription for life</p>
+        </div>
+    </div>
+
+    <div class="UserType">
+        <div class="UTopDiv">
+            <h1>Our Users</h1>
+            <p>We proudly serve patients, doctors, and pharmacies.</p>
+        </div>
+        <div class="UBottomDiv">
+            <div class="UserCard">
+                <i class="fas fa-user-md icon"></i>
+                <h3>Doctors</h3>
+                <p>Consult and monitor patients get medicine informatons of genericss medicines.</p>
+            </div>
+            <div class="UserCard">
+                <i class="fas fa-user icon"></i>
+                <h3>Patients</h3>
+                <p>Track prescription, get medicine and doctors informations</p>
+            </div>
+            <div class="UserCard">
+                <i class="fas fa-clinic-medical icon"></i>
+                <h3>Pharmacies</h3>
+                <p>Track prescriptions and manage inventory more effectievly.</p>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Key Features -->
+    <section id="keyFeatures" class="section-container width-1200">
+        <h2>Key Features</h2>
+        <div class="features-cards">
+            <div class="feature-card">
+                <i class="fas fa-notes-medical icon"></i>
+                <h3>Digital Prescriptions</h3>
+                <p>Doctors create prescriptions with generic medicines and detailed notes.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-pills icon"></i>
+                <h3>Medicine Management</h3>
+                <p>Pharmacies track inventory and sales efficiently with alerts on low stock.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-chart-line icon"></i>
+                <h3>Analytics & Reports</h3>
+                <p>Admins and pharmacies access sales charts and prescription statistics.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="howItWorks" class="section-container width-1200">
+        <h2>How It Works</h2>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Visit Doctor</h3>
+                <p>Doctors write prescriptions with generic medicines and dosage.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Get Prescription Code</h3>
+                <p>System generates a unique code for easy access to prescriptions.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Buy Medicine</h3>
+                <p>Patients can choose brands and purchase from any pharmacy.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h3>Track Usage</h3>
+                <p>Patients and pharmacies monitor doses and stock efficiently.</p>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+
+
+    <div class="WhoWe">
+        <div class="WWLeftSide">
+            <img src="~/Images/DrWithPresc.jpg" alt="Dr with prescription" />
+        </div>
+        <div class="WWRightSide">
+            <h2>Who we are<br />to Serve the nation</h2>
+            <ul>
+                <li><strong>Expert Doctors:</strong> Prescriptions written in generic format.</li>
+                <li><strong>Patient-Centered:</strong> Choose medicines based on your preference.</li>
+                <li><strong>Pharmacy Support:</strong> Pharmacies manage inventory effectively.</li>
+                <li><strong>Nationwide Service:</strong> One platform for all medical needs.</li>
+            </ul>
+        </div>
+    </div>
+
+
+    <section id="uniqueFeatures" class="features-section">
+        <div class="container">
+            <h2>Features that make us unique</h2>
+            <p class="subtext">
+                We simplify healthcare by streamlining communication between admins, doctors, patients, and pharmacies — ensuring seamless prescription, tracking, and inventory management.
+            </p>
+
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fas fa-user-shield icon"></i>
+                    <div>
+                        <h3>Admin Control</h3>
+                        <p>Admins can manage users, monitor system activities, and generate insightful analytics and reports with full control.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <i class="fas fa-stethoscope icon"></i>
+                    <div>
+                        <h3>Doctor Prescription Tools</h3>
+                        <p>Doctors can create prescriptions, manage patient history, and suggest branded medicines using generics-first search.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <i class="fas fa-notes-medical icon"></i>
+                    <div>
+                        <h3>Smart Patient Access</h3>
+                        <p>Patients can view prescriptions via code, track doses, explore generics, and review their complete medical history.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <i class="fas fa-prescription-bottle-alt icon"></i>
+                    <div>
+                        <h3>Pharmacy Management</h3>
+                        <p>Pharmacies can view prescriptions, manage inventory, sell partial meds, and generate basic sales and stock reports.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <i class="fas fa-cogs icon"></i>
+                    <div>
+                        <h3>Automated System</h3>
+                        <p>Prescription codes, auto-dose updates, low-stock alerts, and sales analytics are auto-handled by the system.</p>
+                    </div>
+                </div>
+
+                <div class="feature-item">
+                    <i class="fas fa-chart-line icon"></i>
+                    <div>
+                        <h3>Insightful Dashboards</h3>
+                        <p>Each user has a role-specific dashboard showing relevant data like top searched/sold medicines and statistics.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- FAQs -->
+    <section id="faqs" class="section-container width-1200">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-item">
+            <h4>How can I get my prescription?</h4>
+            <p>After the doctor creates your prescription, a unique code is generated to access it anytime.</p>
+        </div>
+        <div class="faq-item">
+            <h4>Can I choose the brand of my medicine?</h4>
+            <p>Yes! Patients can select preferred brands for generic medicines from any pharmacy.</p>
+        </div>
+        <div class="faq-item">
+            <h4>How do pharmacies manage inventory?</h4>
+            <p>Pharmacies update stock in real time and receive notifications when medicines run low.</p>
+        </div>
+        <div class="faq-item">
+            <h4>Is my medical data safe?</h4>
+            <p>Yes, all data is securely stored and accessible only by authorized users.</p>
+        </div>
+    </section>
+
+    <!-- Contact Info -->
+    <section id="contactInfo" class="section-container full-width">
+        <h2>Contact Us</h2>
+        <p>If you have questions or need support, reach out to us:</p>
+        <ul>
+            <li>Email: <a href="mailto:support@vitascript.com">support@vitascript.com</a></li>
+            <li>Phone: +880 1234 567890</li>
+            <li>Address: 123 Medical Ave, Dhaka, Bangladesh</li>
+        </ul>
+    </section>
+
+
+
+
+
+</main>

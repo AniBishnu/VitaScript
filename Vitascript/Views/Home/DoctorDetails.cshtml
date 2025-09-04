@@ -1,0 +1,53 @@
+﻿@model Vitascript.Models.User
+@{
+    ViewBag.Title = "Doctor Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .profile-container {
+        background-color: #000;
+        color: white;
+        padding: 30px;
+        border-radius: 10px;
+        margin: 30px auto;
+        max-width: 600px;
+        box-shadow: 0 0 10px #fca311;
+    }
+
+        .profile-container h2 {
+            color: #fca311;
+        }
+
+        .profile-container p span {
+            color: #fca311;
+            font-weight: bold;
+        }
+</style>
+
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<div class="profile-container">
+    <h2>@Model.Name</h2>
+    <p><span>Email:</span> @Model.Email</p>
+    <p><span>Phone:</span> @Model.Phone</p>
+    <p><span>Date of Birth:</span> @Model.DOB.ToShortDateString()</p>
+    <p><span>Address:</span> @Model.Address</p>
+    <p><span>City:</span> @Model.City</p>
+</div>

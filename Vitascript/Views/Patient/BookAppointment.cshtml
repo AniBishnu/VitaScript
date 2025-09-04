@@ -1,0 +1,102 @@
+﻿@model List<Vitascript.Models.User>
+@using Vitascript.Models
+
+@{
+    ViewBag.Title = "BookAppointment";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Index.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Patient")">Home</a>
+            <a href="@Url.Action("BookAppointment", "Patient")">Book Appointment</a>
+            <a href="@Url.Action("PrescriptionListPatient", "Patient")">My Prescriptions</a>
+            <a href="@Url.Action("PProfile", "Patient")">Profile</a>
+        </div>
+        <div class="DivBody">
+
+            <!-- Dropdown Filter -->
+            <div class="filter-dropdown">
+                <label for="doctorTypeFilter">Filter by Specialization:</label>
+                <select id="doctorTypeFilter" class="filter-select">
+                    <option value="All">All</option>
+                    @foreach (var type in (SelectList)ViewBag.DoctorTypes)
+                    {
+                        <option value="@type.Value">@type.Text</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Doctor List -->
+            <div class="patient-list" id="doctorList">
+                <table class="patient-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fa-solid fa-user-doctor"></i> Name</th>
+                            <th>Specialist In</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var doctor in Model)
+                        {
+                            <tr>
+                                <td>@doctor.Name</td>
+                                <td>@doctor.DoctorType.Name</td>
+                                <td>@doctor.Phone</td>
+                                <td class="action-buttons">
+                                    <button class="btn-prescribe" onclick="bookAppointment(@doctor.Id)">Book Appointment</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<script>
+    document.getElementById("doctorTypeFilter").addEventListener("change", function () {
+        const selectedType = this.value;
+        const rows = document.querySelectorAll("#doctorList table tbody tr");
+
+        rows.forEach(row => {
+            const rowType = row.cells[1]?.textContent.trim(); // Specialist In column text
+            if (selectedType === "All" || selectedType === rowType) {
+                row.style.display = "table-row";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+
+    function bookAppointment(doctorId) {
+        fetch('@Url.Action("BookAppointment", "Patient")', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "RequestVerificationToken": '@Html.AntiForgeryToken().ToHtmlString().Split('"')[5]'
+            },
+            body: JSON.stringify({ doctorId: doctorId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert("Appointment booked successfully.");
+                location.reload();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(err => console.error(err));
+    }
+</script>

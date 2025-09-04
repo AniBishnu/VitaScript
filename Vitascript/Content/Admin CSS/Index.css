@@ -1,0 +1,85 @@
+﻿.topHeader {
+    margin-top: 100px; /* This adds space before the header */
+    text-align: center;
+}
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns */
+    gap: 30px;
+    margin: 30px 0;
+}
+
+
+.card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    min-width: 220px;
+    transition: transform 0.3s ease;
+}
+
+
+
+    .card i {
+        font-size: 32px;
+        color: #fca311;
+        margin-bottom: 12px;
+    }
+
+    .card h3 {
+        font-size: 28px;
+        color: #04091e;
+    }
+
+    .card p {
+        font-size: 16px;
+        color: #777;
+    }
+
+.dashboard-charts {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
+.chart-placeholder {
+    flex: 1;
+    min-width: 300px;
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+    .chart-placeholder h4 {
+        color: #04091e;
+        margin-bottom: 10px;
+    }
+
+.empty-chart {
+    background-color: #f1f5f9;
+    height: 180px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-style: italic;
+}
+
+.btn-prescribe {
+    background-color: #fca311;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+    .btn-prescribe:hover {
+        background-color: #d48806;
+    }

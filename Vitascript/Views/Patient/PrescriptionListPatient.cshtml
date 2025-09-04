@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Vitascript.DTOs.PrescriptionViewDTO>
+
+@{
+    ViewBag.Title = "My Prescriptions";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<div class="MainWrapper">
+    <div class="NavdivWrapper">
+        <a href="@Url.Action("Index", "Patient")">Home</a>
+        <a href="@Url.Action("BookAppointment", "Patient")">Book Appointment</a>
+        <a href="@Url.Action("PrescriptionListPatient", "Patient")">My Prescriptions</a>
+        <a href="@Url.Action("PProfile", "Patient")">Profile</a>
+    </div>
+
+    <div class="DivBody">
+        <div class="filter-dropdown"></div>
+        <div class="filter-dropdown"></div>
+
+        <h2>My Prescriptions</h2>
+        <br />
+
+        <div class="patient-list" id="patientList">
+            <table class="patient-table">
+                <thead>
+                    <tr>
+                        <th>Prescription Code</th>
+                        <th>Issued Date</th>
+                        <th>Doctor</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var prescription in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("PrescriptionDetailsPatient", "Patient", new { id = prescription.Id })">
+                                        @prescription.PrescriptionCode
+                                    </a>
+                                </td>
+                                <td>@prescription.IssuedDate.ToString("dd MMM yyyy")</td>
+                                <td>Dr. @prescription.DoctorName</td>
+                                <td>
+                                    <a class="action-button" href="@Url.Action("PrescriptionDetailsPatient", "Patient", new { id = prescription.Id })">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" style="text-align: center;">No prescriptions found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    .action-button {
+        background-color: #fca311;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>

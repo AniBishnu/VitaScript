@@ -1,0 +1,120 @@
+﻿.details-container {
+    padding: 30px;
+    background-color: #e7edf2;
+    min-height: auto;
+}
+
+.patient-header {
+    display: flex;
+    align-items: center;
+    width: 1200px;
+    justify-content: space-between;
+    margin: 60px auto 25px auto;
+}
+
+.patient-info {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+    .patient-info img {
+        width: 140px;
+        height: 140px;
+        object-fit: contain;
+        border-radius: 10px;
+        background-color: white;
+        padding: 10px;
+    }
+
+.patient-text {
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.write-prescription-btn {
+    background-color: #fca311;
+    color: black;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+    .write-prescription-btn:hover {
+        background-color: #e6950e;
+    }
+
+.section-title {
+    font-weight: bold;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+
+.medical-history-box {
+    background-color: #dcdcdc;
+    padding: 20px;
+    border-radius: 6px;
+    min-height: 120px;
+    color: #333;
+}
+
+.prescription-table {
+    width: 100%;
+    margin-top: 15px;
+    background-color: #f3f6f8;
+    border-collapse: collapse;
+}
+
+    .prescription-table th,
+    .prescription-table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .prescription-table th {
+        background-color: #dcdcdc;
+    }
+
+.action-button {
+    background-color: #fca311;
+    color: black;
+    border: none;
+    padding: 6px 12px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+
+/*Extra for this page*/
+.medical-history-box textarea {
+    width: 100%;
+    height: 120px;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: none;
+    border-color: none;
+}
+
+.Medicine-container {
+    background-color: #dcdcdc;
+    padding: 20px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+}
+
+    .Medicine-container input,
+    .Medicine-container textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 12px;
+        border-radius: 5px;
+        border: 1px solid #aaa;
+        font-size: 15px;
+    }

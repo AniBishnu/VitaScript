@@ -1,0 +1,76 @@
+﻿@model List<Vitascript.ViewModel.UserPharmacy>
+@using Vitascript.DTOs
+@{
+    ViewBag.Title = "Pharmacies";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Home CSS/Doctors.css" />
+<link rel="stylesheet" href="~/Content/Site.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+
+<div class="page-header">
+    <h1>Visit Pharmacies</h1>
+    <p>Your trusted destination for medicines and healthcare products</p>
+</div>
+
+<div class="dropdown-container">
+    @Html.Label("Location", "Filter by Pharmacy Location", new { @class = "dropdown-label" })
+
+    @Html.DropDownList(
+        "Location",
+        new SelectList(Enum.GetValues(typeof(Location))),
+        "All Locations",
+        new
+        {
+            @class = "custom-dropdown",
+            id = "locationFilter",
+            onchange = "filterByLocation()"
+        }
+    )
+</div>
+
+<div class="doctor-cards-grid">
+    @foreach (var item in Model)
+    {
+        <div class="doctor-card">
+            <div class="card-header">
+                <div class="avatar">
+                    <i class="fas fa-clinic-medical"></i>
+
+
+                </div>
+                <div class="info">
+                    <h2>@item.pharmacyName.PharmacyName</h2>
+                </div>
+            </div>
+            <div class="card-body">
+                <p><strong>Location(City):</strong> @item.Pharmacy.City</p>
+                <p><strong>Email:</strong> @item.Pharmacy.Email</p>
+                <p><strong>Phone:</strong> @item.Pharmacy.Phone</p>
+            </div>
+            
+        </div>
+    }
+</div>
+
+
+
+
+
+<script>
+    function filterByLocation() {
+        var dropdown = document.getElementById("locationFilter");
+        var selectedValue = dropdown.value;
+        var cards = document.querySelectorAll(".doctor-card");
+        cards.forEach(function (card) {
+            var locationText = card.querySelector(".card-body p:nth-child(1)").textContent.trim();
+            if (selectedValue === "" || locationText.includes(selectedValue)) {
+                card.style.display = "block";
+            } else {
+                card.style.display = "none";
+            }
+        });
+    }
+</script>

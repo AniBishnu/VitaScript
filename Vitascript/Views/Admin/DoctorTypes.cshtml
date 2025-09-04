@@ -1,0 +1,110 @@
+﻿@model List<Vitascript.Models.DoctorType>
+@{
+    ViewBag.Title = "Doctors";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Admin")">Home</a>
+
+            <div class="dropdown">
+                <a href="#">Manage Users</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("Users", "Admin")">All Users</a>
+                    <a href="@Url.Action("DoctorTypes", "Admin")">Doctor Types</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">Manage Medicines</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("GenericMedicines", "Admin")">Generic Medicines</a>
+                    <a href="@Url.Action("BrandedMedicines", "Admin")">Branded Medicines</a>
+                    <a href="@Url.Action("Brands", "Admin")">Brands</a>
+                </div>
+            </div>
+
+            <a href="@Url.Action("Prescriptions", "Admin")">Prescriptions</a>
+            <a href="@Url.Action("Transactions", "Admin")">Transactions</a> 
+            <a href="@Url.Action("AdminProfile", "Admin")">Profile</a>
+        </div>
+
+        <div class="DivBody">
+            <div class="filter-dropdown">
+                
+            </div>
+            <div class="header-wrapper">
+                <h2>All Doctors</h2>
+                <a href="@Url.Action("AddDoctorType", "Admin")" class="btn-add-user">
+                    <i class="fas fa-user-plus"></i> Add Doctor Type
+                </a>
+            </div>
+
+            <div class="patient-list" id="doctorList">
+                <table class="patient-table">
+                    <thead>
+                        <tr>
+                            <th>Doctor Type ID</th>
+                            <th>Doctor Type Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var doctor in Model)
+                        {
+                            <tr>
+                                <td>@doctor.Id</td>
+                                <td>@doctor.Name</td>
+                                <td class="action-buttons">
+                                    <a href="@Url.Action("Details", "Admin", new { id = doctor.Id })" class="action-button">Details</a>
+                                    <a href="@Url.Action("AddDoctorType", "Admin", new { doctor.Id,doctor.Name })" class="action-button">Edit</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<style>
+    .header-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-add-user {
+        background-color: #04091e;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-add-user:hover {
+            background-color: #fca311;
+            color: #04091e;
+        }
+    .action-button {
+        background-color: #fca311;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>

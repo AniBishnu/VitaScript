@@ -1,0 +1,142 @@
+﻿@model Vitascript.Models.GenericMedicine
+
+@{
+    ViewBag.Title = "AddGenericMedicine";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Home CSS/UserAuth.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Admin")">Home</a>
+
+            <div class="dropdown">
+                <a href="#">Manage Users</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("Users", "Admin")">All Users</a>
+                    <a href="@Url.Action("DoctorTypes", "Admin")">Doctor Types</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">Manage Medicines</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("GenericMedicines", "Admin")">Generic Medicines</a>
+                    <a href="@Url.Action("BrandedMedicines", "Admin")">Branded Medicines</a>
+                    <a href="@Url.Action("Brands", "Admin")">Brands</a>
+                </div>
+            </div>
+
+            <a href="@Url.Action("Prescriptions", "Admin")">Prescriptions</a>
+            <a href="@Url.Action("Transactions", "Admin")">Transactions</a> 
+            <a href="@Url.Action("AdminProfile", "Admin")">Profile</a>
+        </div>
+
+        <div class="DivBody">
+            <h2> @(Model != null && Model.Id > 0 ? "Update" : "Add")  Generic Medicine</h2>
+
+            @using (Html.BeginForm("CreateGenericMedicine", "Admin", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name)
+                    @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Generic Name" })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Formula)
+                    @Html.TextBoxFor(model => model.Formula, new { @class = "form-control", placeholder = "Formula" })
+                    @Html.ValidationMessageFor(model => model.Formula, "", new { @class = "text-danger" })
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i>
+                    @(Model != null && Model.Id > 0 ? "Update" : "Add") Generic Medicine
+                </button>
+            }
+
+            <div style="margin-top: 20px;">
+                @Html.ActionLink("Back to List", "GenericMedicines", "Admin", null, new { @class = "btn btn-secondary" })
+            </div>
+        </div>
+    </div>
+</body>
+
+<style>
+    .DivBody {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+        width: 1500px;
+    }
+
+    label,
+    .control-label {
+        color: #04091e;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            background-color: #ffffff;
+            color: #04091e;
+            border-color: #fca311;
+            outline: none;
+        }
+
+    .btn-primary {
+        background-color: #04091e;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #fca311;
+            color: #04091e;
+        }
+
+    .btn-secondary {
+        background-color: #ccc;
+        color: #333;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #999;
+            color: white;
+        }
+</style>

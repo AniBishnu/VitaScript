@@ -1,0 +1,214 @@
+﻿/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.navWrapper {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 135px;
+        padding-top:10px;
+    background-color: rgb(4, 9, 30); /* Transparent #04091e */
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    color: #ffffff;
+    /* Symmetrical shadow on all sides */
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+}
+
+
+.navDiv1 {
+    width: 100%;
+}
+
+.navDiv2 {
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+
+    height: 50px;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid #ffffff33;
+    margin: 10px 0;
+}
+
+.navDiv3 {
+    display: flex;
+    margin-left: 200px;
+    margin-right: 200px;    
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navDiv4 {
+    display: flex;
+    gap: 200px; /* Adds 100px space between each child <a> */
+}
+
+
+/* navDiv4: Doctors & Pharmacies */
+.navDiv4 a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+
+    .navDiv4 a:hover {
+        color: #fca311;
+    }
+
+/* navDiv5: Search bar */
+.navDiv5 input {
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    width: 300px;
+    background-color: #ffffffdd;
+    color: #04091e;
+    font-size: 14px;
+}
+
+/* navDiv6: Medicines & Dropdown */
+.navDiv6 {
+    display: flex;
+    align-items: center;
+    gap: 200px;
+}
+
+    .navDiv6 a {
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+        .navDiv6 a:hover {
+            color: #fca311;
+        }
+
+/* Dropdown menu */
+.dropdown {
+    position: relative;
+}
+
+.dropbtn {
+    background-color: transparent;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    background-color: #ffffff;
+    color: #04091e;
+    min-width: 150px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 1;
+}
+
+    .dropdown-content a {
+        color: #04091e;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        transition: background 0.3s ease;
+    }
+
+        .dropdown-content a:hover {
+            background-color: #f0f0f0;
+        }
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+footer {
+    width: 100%;
+    background-color: #04091e;
+    color: #ffffff;
+}
+
+.Footer {
+    width: 100%;
+    max-width: 100%;
+    height: 600px;
+    padding: 60px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+.Footer1 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.Footer2 {
+    margin: 0 500px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 40px;
+}
+
+.Footer2_Part1,
+.Footer2_Part2 {
+    flex: 1;
+    min-width: 300px;
+}
+
+.Footer2 h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #fca311;
+}
+
+.Footer2 hr {
+    border: 1px solid #fca311;
+    margin-bottom: 15px;
+    width: 60px;
+}
+
+.Footer2 ul {
+    list-style: none;
+    padding-left: 0;
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.Footer3 {
+    text-align: center;
+    font-size: 14px;
+    margin-top: 50px;
+    opacity: 0.8;
+}

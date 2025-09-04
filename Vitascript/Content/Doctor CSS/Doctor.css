@@ -1,0 +1,66 @@
+﻿/* Doctor Horizontal Navbar */
+body {
+    padding-top: 100px; /**/
+    width: 2000px;
+    margin: 0 auto;
+    max-height: 100vh;
+}
+
+
+
+
+.NavdivWrapper {
+    width: 800px;
+    margin: 0 auto;
+    height: 60px;
+    top: 80px; /* position below the top navbar */
+    background-color: #04091e; /* Darker variant of #04091e for depth */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 60px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border-radius: 8px; /* Rounded corners for a modern look */
+}
+
+    .NavdivWrapper a {
+        color: #ffffff;
+        text-decoration: none;
+        font-size: 16px;
+        font-weight: 500;
+        position: relative;
+        transition: color 0.3s ease;
+    }
+
+        .NavdivWrapper a:hover {
+            color: #fca311;
+        }
+
+        .NavdivWrapper a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            height: 2px;
+            width: 0%;
+            background-color: #fca311;
+            transition: width 0.3s ease;
+        }
+
+        .NavdivWrapper a:hover::after {
+            width: 100%;
+        }
+
+/* Doctor Homepage Body */
+.DivBody {
+    background-color: #eef3f8;
+    min-height: calc(100vh - 200px);
+    padding: 10px 80px;
+    color: #04091e;
+    font-size: 18px;
+    line-height: 1.6;
+    border-radius: 12px; 
+}
+
+  

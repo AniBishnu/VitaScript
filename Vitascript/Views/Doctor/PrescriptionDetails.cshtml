@@ -1,0 +1,88 @@
+﻿@model Vitascript.ViewModel.PatientDetailsViewModel
+@{
+    ViewBag.Title = "PrescriptionDetails";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Prescription.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+
+<div class="MainWrapper">
+    <div class="NavdivWrapper">
+        <a href="@Url.Action("Index", "Doctor")">Home</a>
+        <a href="@Url.Action("MyPatients", "Doctor")">My patients</a>
+        <a href="@Url.Action("PrescriptionList", "Doctor")">Prescriptions</a>
+        <a href="@Url.Action("DProfile", "Doctor")">Profile</a>
+    </div>
+
+    <div class="DivBody details-container">
+        <div class="patient-header">
+            <div class="patient-info">
+                <i class="fa-solid fa-user-injured fa-7x" style="color: #04091e; background-color: white; padding: 20px; border-radius: 10px;"></i>
+                <div class="patient-text">
+                    <h2><strong>Patient Name:</strong>@Model.PatientUser.Name</h2>
+                    <p><strong>Age:</strong> @((DateTime.Now.Year - Model.PatientUser.DOB.Year))</p>
+                    <p>
+                        <strong>Prescription Code:</strong>
+                        <strong>@string.Join(", ", Model.Prescriptions.Select(p =>p.PrescriptionCode))</strong>
+                    </p>
+                    <p>
+                        <strong>The Prescription was Written By:</strong>
+                        <strong>@string.Join(", ", Model.Prescriptions.Select(p => "Dr. " + p.DoctorName))</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">Medical History</div>
+            <div class="medical-history-box">
+                @if (Model.MedicalHistories != null && Model.MedicalHistories.Any())
+                {
+                    foreach (var history in Model.MedicalHistories)
+                    {
+                        <p>@history.Description</p>
+                        <small><i>@history.DateRecorded.ToShortDateString()</i></small>
+                        <hr />
+                    }
+                }
+                else
+                {
+                    <p>No medical history available.</p>
+                }
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">Prescription of the patient</div>
+            <table class="prescription-table">
+                <thead>
+                    <tr>
+                        <th>Medicine Name(Generic Name)</th>
+                        <th>Dose</th>
+                        <th>Duration In days</th>
+                        <th>Quantity</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var prescription in Model.Prescriptions)
+                    {
+                        foreach (var med in prescription.PrescribedMedicines)
+                        {
+                            <tr>
+                                <td>@med.GenericMedicineName</td>
+                                <td>@med.Dose</td>
+                                <td>@med.Duration</td>
+                                <td>@med.TotalQuantity</td>
+                                <td>@med.Notes</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,192 @@
+﻿@model Vitascript.DTOs.UserDTO
+@{
+    ViewBag.Title = "AddUser";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<h2>AddUser</h2>
+
+<link rel="stylesheet" href="~/Content/Home CSS/UserAuth.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Admin")">Home</a>
+
+            <div class="dropdown">
+                <a href="#">Manage Users</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("Users", "Admin")">All Users</a>
+                    <a href="@Url.Action("DoctorTypes", "Admin")">Doctor Types</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">Manage Medicines</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("GenericMedicines", "Admin")">Generic Medicines</a>
+                    <a href="@Url.Action("BrandedMedicines", "Admin")">Branded Medicines</a>
+                    <a href="@Url.Action("Brands", "Admin")">Brands</a>
+                </div>
+            </div>
+
+            <a href="@Url.Action("Prescriptions", "Admin")">Prescriptions</a>
+            <a href="@Url.Action("Transactions", "Admin")">Transactions</a> 
+            <a href="@Url.Action("AdminProfile", "Admin")">Profile</a>
+        </div>
+
+        <div class="DivBody">
+            <div class="filter-dropdown">
+
+            </div>
+            <h2>@(Model != null && Model.Id > 0 ? "Update" : "Add") User</h2>
+
+            @using (Html.BeginForm("CreateUser", "Admin", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Id)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name)
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password)
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Phone)
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone" })
+                    @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.DOB)
+                    @Html.TextBoxFor(m => m.DOB, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    @Html.ValidationMessageFor(m => m.DOB, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email", placeholder = "Email" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.City)
+                    @Html.DropDownListFor(m => m.City, new SelectList(Enum.GetNames(typeof(Vitascript.DTOs.Location))), "-- Select City --", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Address)
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @if (Model != null && Model.Id > 0)
+                    {
+                        @Html.HiddenFor(x => x.UserTypeId)
+                    }
+                    else
+                    {
+                        @Html.Label("UserType", "Select User Type")
+                        @Html.DropDownListFor(m => m.UserTypeId, (SelectList)ViewBag.UserTypes, "Select User Type", new { @class = "form-control", id = "userTypeDropdown" })
+                        @Html.ValidationMessageFor(m => m.UserTypeId, "", new { @class = "text-danger" })
+                    }
+                </div>
+
+
+                    <div class="form-group" id="doctorTypeDiv" style="display:none;">
+                        @Html.Label("DoctorTypeId", "Select Doctor Type")
+                        @Html.DropDownListFor(m => m.DoctorTypeId, (SelectList)ViewBag.DoctorTypes, "Select Doctor Type", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.DoctorTypeId, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group" id="pharmacyDiv" style="display:none;">
+                        @Html.Label("PharmacyName", "Enter Pharmacy Name")
+                        @Html.TextBox("PharmacyName", null, new { @class = "form-control", placeholder = "Pharmacy Name" })
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> @(Model != null && Model.Id > 0 ? "Update" : "Add") User
+                    </button>
+                    }
+
+
+                </div>
+    </div>
+</body>
+
+<script>
+    document.getElementById("userTypeDropdown").addEventListener("change", function () {
+        const selected = parseInt(this.value);
+        document.getElementById("doctorTypeDiv").style.display = selected === 2 ? "block" : "none";
+        document.getElementById("pharmacyDiv").style.display = selected === 4 ? "block" : "none";
+    });
+</script>
+
+<style>
+    .DivBody {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+    .form-group {
+        margin-bottom: 15px;
+        width: 1500px;
+    }
+
+    label,
+    .control-label {
+        color: #04091e; /* Dark blue theme color */
+        font-weight: 500;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            background-color: #ffffff;
+            color: #04091e; /* Theme color on focus */
+            border-color: #fca311; /* Highlight border */
+            outline: none;
+        }
+
+    .btn-primary {
+        background-color: #04091e;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #fca311;
+            color: #04091e;
+        }
+
+</style>

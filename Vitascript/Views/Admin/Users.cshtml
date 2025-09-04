@@ -1,0 +1,141 @@
+﻿@model List<Vitascript.Models.User>
+@{
+    ViewBag.Title = "All Users";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Admin")">Home</a>
+
+            <div class="dropdown">
+                <a href="#">Manage Users</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("Users", "Admin")">All Users</a>
+                    <a href="@Url.Action("DoctorTypes", "Admin")">Doctor Types</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">Manage Medicines</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("GenericMedicines", "Admin")">Generic Medicines</a>
+                    <a href="@Url.Action("BrandedMedicines", "Admin")">Branded Medicines</a>
+                    <a href="@Url.Action("Brands", "Admin")">Brands</a>
+                </div>
+            </div>
+
+            <a href="@Url.Action("Prescriptions", "Admin")">Prescriptions</a>
+            <a href="@Url.Action("Transactions", "Admin")">Transactions</a> 
+            <a href="@Url.Action("AdminProfile", "Admin")">Profile</a>
+        </div>
+
+        <div class="DivBody">
+
+
+            <div class="filter-dropdown">
+                <label for="filterSelect">Filter by Role:</label>
+                <select id="filterSelect">
+                    <option value="All">All</option>
+                    @foreach (var type in Model.Select(u => u.UserType.UserTypeName).Distinct())
+                    {
+                        <option value="@type">@type</option>
+                    }
+                </select>
+            </div>
+            <div class="header-wrapper">
+                <h2>All Registered Users</h2>
+                <a href="@Url.Action("AddUser", "Admin")" class="btn-add-user">
+                    <i class="fas fa-user-plus"></i> Add User
+                </a>
+            </div>
+
+            <div class="patient-list" id="patientList">
+                <table class="patient-table">
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th><i class="fa-solid fa-user"></i> Name</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr data-role="@user.UserType.UserTypeName">
+                                <td>@user.Id</td>
+                                <td>@user.Name</td>
+                                <td>@user.UserType.UserTypeName</td>
+                                <td class="action-buttons">
+                                    <a href="@Url.Action("UsersDtls", "Admin", new { userID = user.Id })" class="action-button">Details</a>
+                                    <a href="@Url.Action("AddUser", "Admin", new { id = user.Id })" class="action-button">Edit</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    document.getElementById("filterSelect").addEventListener("change", function () {
+        const selectedRole = this.value;
+        const rows = document.querySelectorAll(".patient-table tbody tr");
+
+        rows.forEach(row => {
+            const role = row.getAttribute("data-role");
+
+            if (selectedRole === "All" || role === selectedRole) {
+                row.style.display = "table-row";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+</script>
+
+
+
+<style>
+    .header-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-add-user {
+        background-color: #04091e;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-add-user:hover {
+            background-color: #fca311;
+            color: #04091e;
+        }
+    .action-button {
+        background-color: #fca311;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+</style>

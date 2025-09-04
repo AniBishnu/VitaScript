@@ -1,0 +1,94 @@
+﻿@model Vitascript.ViewModel.PatientDetailsViewModel
+
+@{
+    ViewBag.Title = "PatientsDetails";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+
+    var patient = Model.PatientUser;
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Prescription.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<div class="MainWrapper">
+    <div class="NavdivWrapper">
+        <a href="@Url.Action("Index", "Doctor")">Home</a>
+        <a href="@Url.Action("MyPatients", "Doctor")">My patients</a>
+        <a href="@Url.Action("PrescriptionList", "Doctor")">Prescriptions</a>
+        <a href="@Url.Action("DProfile", "Doctor")">Profile</a>
+    </div>
+
+    <div class="DivBody details-container">
+
+        <div class="patient-header">
+            <div class="patient-info">
+                <i class="fa-solid fa-user-injured fa-7x" style="color: #04091e; background-color: white; padding: 20px; border-radius: 10px;"></i>
+                <div class="patient-text">
+                    <h2>@patient.Name</h2>
+                    <p><strong>Age:</strong> @((DateTime.Now.Year - patient.DOB.Year))</p>
+                    <p><strong>Phone no:</strong> @patient.Phone</p>
+                    <p><strong>Email:</strong> @patient.Email</p>
+                    <p><strong>Address:</strong> @patient.Address , @patient.City</p>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <div>
+            <div class="section-title">Medical History</div>
+            <div class="medical-history-box">
+                @if (Model.MedicalHistories != null && Model.MedicalHistories.Any())
+                {
+                    foreach (var history in Model.MedicalHistories.OrderByDescending(m => m.DateRecorded))
+                    {
+                        <p><strong>@history.DateRecorded.ToShortDateString()</strong>: @history.Description</p>
+                        <hr />
+                    }
+                }
+                else
+                {
+                    <p class="text-muted text-center">No medical history found for the patient.</p>
+                }
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">Prescription of the patient</div>
+            <table class="prescription-table">
+                <thead>
+                    <tr>
+                        <th>Prescription code</th>
+                        <th>Prescribed by</th>
+                        <th>Prescription date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Prescriptions != null && Model.Prescriptions.Any())
+                    {
+                        foreach (var p in Model.Prescriptions.OrderByDescending(p => p.IssuedDate))
+                        {
+                            <tr>
+                                <td><a href="@Url.Action("PrescriptionDetails", "Doctor", new { id = p.Id })">@p.PrescriptionCode</a></td>
+                                <td> Dr. @p.DoctorName</td>
+                                <td>@p.IssuedDate.ToShortDateString()</td>
+                                <td>
+                                    <a href="@Url.Action("PrescriptionDetails", "Doctor", new { id = p.Id })" class="action-button">View</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center">No prescriptions found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,180 @@
+﻿@model Vitascript.ViewModel.AddMedicineVM
+@{
+    ViewBag.Title = "Add Medicine to Pharmacy Inventory";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="~/Content/Doctor CSS/Index.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Pharmacy")">Home</a>
+            <a href="@Url.Action("SellMedicine", "Pharmacy")">Sell Medicines</a>
+            <a href="@Url.Action("Inventory", "Pharmacy")">Inventory</a>
+            <a href="@Url.Action("Sales", "Pharmacy")">Sales</a>
+            <a href="@Url.Action("PharmacyProfile", "Pharmacy")">Profile</a>
+        </div>
+        <div class="DivBody">
+            <div class="filter-dropdown"></div>
+
+            <h2>Add Medicine to Inventory</h2>
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Error"]</div>
+            }
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            }
+
+            @using (Html.BeginForm("AddPharmacyMedicine", "Pharmacy", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.GenericMedicineId, "Generic Medicine")
+                    @Html.DropDownListFor(m => m.GenericMedicineId, Model.GenericMedicines, "-- Select Generic Medicine --", new { @class = "form-control", id = "genericDropdown" })
+                    @Html.ValidationMessageFor(m => m.GenericMedicineId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.BrandId, "Brand")
+                    @Html.DropDownList("BrandId", new SelectList(Enumerable.Empty<SelectListItem>()), "-- Select Brand --", new { @class = "form-control", id = "brandDropdown" })
+                    @Html.ValidationMessage("BrandId", "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.BrandedMedicineId, "Branded Medicine")
+                    @Html.DropDownList("BrandedMedicineId", new SelectList(Enumerable.Empty<SelectListItem>()), "-- Select Branded Medicine --", new { @class = "form-control", id = "brandedDropdown" })
+                    @Html.ValidationMessage("BrandedMedicineId", "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Quantity)
+                    @Html.TextBoxFor(m => m.Quantity, new { @class = "form-control", type = "number", min = "1", placeholder = "Enter quantity to add" })
+                    @Html.ValidationMessageFor(m => m.Quantity, "", new { @class = "text-danger" })
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i> Add to Inventory
+                </button>
+            }
+
+
+        </div>
+    </div>
+
+</body>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $('#genericDropdown').change(function () {
+            var genericId = $(this).val();
+            $('#brandDropdown').empty();
+            $('#brandedDropdown').empty();
+
+            if (genericId) {
+                $.getJSON('/Pharmacy/GetBrandsByGeneric', { genericId: genericId }, function (data) {
+                    $('#brandDropdown').append($('<option>').text('-- Select Brand --').attr('value', ''));
+                    $.each(data, function (i, item) {
+                        $('#brandDropdown').append($('<option>').val(item.Id).text(item.Name));
+                    });
+                });
+            }
+        });
+
+        $('#brandDropdown').change(function () {
+            var genericId = $('#genericDropdown').val();
+            var brandId = $(this).val();
+            $('#brandedDropdown').empty();
+
+            if (genericId && brandId) {
+                $.getJSON('/Pharmacy/GetBrandedByGenericAndBrand', { genericId: genericId, brandId: brandId }, function (data) {
+                    $('#brandedDropdown').append($('<option>').text('-- Select Branded Medicine --').attr('value', ''));
+                    $.each(data, function (i, item) {
+                        $('#brandedDropdown').append($('<option>').val(item.Id).text(item.Name));
+                    });
+                });
+            }
+        });
+    </script>
+}
+
+
+<style>
+    .DivBody {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+        width: 1500px;
+    }
+
+    label,
+    .control-label {
+        color: #04091e;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        box-sizing: border-box;
+        background-color: #f9f9f9;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            background-color: #ffffff;
+            color: #04091e;
+            border-color: #fca311;
+            outline: none;
+        }
+
+    .btn-primary {
+        background-color: #04091e;
+        color: white;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #fca311;
+            color: #04091e;
+        }
+
+    .btn-secondary {
+        background-color: #ccc;
+        color: #333;
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+    }
+
+        .btn-secondary:hover {
+            background-color: #999;
+            color: white;
+        }
+</style>

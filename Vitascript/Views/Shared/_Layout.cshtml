@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Vitascript</title>@*
+    @Styles.Render("~/Content/css")*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="~/Content/Layout CSS/Navbar.css">
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="@Url.Content("~/Content/Layout CSS/NavbarPortal.css")">
+
+</head>
+<body>
+    <div class="navWrapperNAV">
+        <nav>
+            <div class="navDiv1">
+                <div class="navDiv2">
+                    <a href="@Url.Action("Index", "Home")">
+                        <img src="~/Images/logo_VS.png" alt="Logo" class="logo" />
+                    </a>
+                </div>
+                <hr />
+                <div class="navDiv3">
+                    <div class="navDiv4">
+                        <a href="@Url.Action("Doctors", "Home")">Doctors</a>
+                        <a href="@Url.Action("Pharmacies", "Home")">Pharmacies</a>
+                    </div>
+                    <div class="navDiv5">
+                        <input type="text" placeholder="Search doctors, pharmaciesss...." />
+                    </div>
+                    <div class="navDiv6">
+                        <a href="@Url.Action("medicines", "Home")">Medicines</a>
+                        <div class="dropdown">
+                            <button class="dropbtn">Account</button>
+                            <div class="dropdown-content">
+                                <a href="@Url.Action("Login", "Home")">Login</a>
+                                <a href="@Url.Action("Register", "Home")">Register</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div>
+        @RenderBody()
+        <hr />
+        <footer>
+            <div class="Footer">
+                <div class="Footer1">
+                    <h1>Welcome to TripleByte</h1>
+                </div>
+
+                <div class="Footer2">
+                    <div class="Footer2_Part1">
+                        <h2>About Us</h2>
+                        <hr />
+                        <ul>
+                            <li>Anirudda Nath, ID: 22-46115-1</li>
+                            <li>Avirupa Das, ID: 22-46080-1</li>
+                            <li>Mahfuza Farjana, ID: 22-46084-1</li>
+                        </ul>
+                    </div>
+
+                    <div class="Footer2_Part2">
+                        <h2>About Our Projects</h2>
+                        <hr />
+                        <ul>
+                            <li>Core Rights</li>
+                            <li>Eggventure</li>
+                            <li>Edusphereee</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="Footer3">
+                    <p>&copy; <span id="year"></span> - My ASP.NET Application</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+
+    <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

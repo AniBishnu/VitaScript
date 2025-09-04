@@ -1,0 +1,74 @@
+﻿.profile-container {
+    display: flex;
+    padding: 40px;
+    max-width: 100%;
+    margin: 100px auto;
+    gap: 50px;
+}
+hr{
+   /* color:black;*/
+    background-color:black;
+}
+.profile-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.doctor-icon {
+    color: #04091e;
+    background-color: #fca311;
+    padding: 60px;
+    border-radius: 30px;
+}
+
+.profile-right {
+    flex: 2;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.doctor-name {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.doctor-specialty {
+    font-size: 18px;
+    color: #777;
+    font-weight: 500;
+}
+
+.btn-edit {
+    padding: 10px 20px;
+    background-color: #fca311;
+    color: #fff;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    margin-left:50px;
+}
+
+    .btn-edit:hover {
+        background-color: #e8920f;
+    }
+
+    .btn-edit i {
+        margin-right: 6px;
+    }
+
+.doctor-info {
+    margin-top: 20px;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+    .doctor-info strong {
+        color: #333;
+    }

@@ -1,0 +1,71 @@
+﻿@model Vitascript.Models.User
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/Index.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Doctor")">Home</a>
+            <a href="@Url.Action("MyPatients", "Doctor")">My patients</a>
+            <a href="@Url.Action("PrescriptionList", "Doctor")">Prescriptions</a>
+            <a href="@Url.Action("DProfile", "Doctor")">Profile</a>
+        </div>
+        <div class="DivBody">
+
+
+            <h2 class="topHeader">Welcome, Dr. @Model.Name</h2>
+
+            <div class="dashboard-cards">
+                <div class="card">
+                    <i class="fas fa-user-clock"></i>
+                    <h3>@ViewBag.PatientsWaiting</h3>
+                    <p>Patients Waiting</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-users"></i>
+                    <h3>@ViewBag.TotalPatients</h3>
+                    <p>Total Patients</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-file-medical"></i>
+                    <h3>@ViewBag.PrescriptionsGiven</h3>
+                    <p>Prescriptions Given</p>
+                </div>
+            </div>
+
+            <div class="dashboard-charts">
+                @*<div class="chart-placeholder">
+                    <h4>Prescription Trend</h4>
+                    <div class="empty-chart">[Chart coming soon]</div>
+                </div>*@
+                <div class="chart-placeholder">
+                    <h4>Patient Visits</h4>
+                    <div style="max-height: 250px; overflow-y: auto;">
+                        @if (ViewBag.UnprescribedPatients != null && ((List<Vitascript.Models.User>)ViewBag.UnprescribedPatients).Count > 0)
+                        {
+                            foreach (var patient in (List<Vitascript.Models.User>)ViewBag.UnprescribedPatients)
+                            {
+                                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background-color: #f9fafc; margin-bottom: 10px; border-radius: 8px;">
+                                    <span>@patient.Name</span>
+                                    <a href="@Url.Action("addPrescription", "Doctor", new { patientId = patient.Id })" class="btn-prescribe">Prescribe</a>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <p style="color: #777;">All assigned patients have been prescribed.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

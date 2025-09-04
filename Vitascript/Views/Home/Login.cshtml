@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Home CSS/UserAuth.css" />
+
+<div class="form-container">
+    <h2 class="form-title">Login to Vitascript</h2>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Error as string))
+    {
+        <div id="error">@ViewBag.Error</div>
+    }
+
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.Label("email", "Email", new { @style = "color: black;" })
+        @Html.TextBox("email", null, new { @class = "form-control", placeholder = "Email" })
+        @Html.ValidationMessage("email", "", new { @class = "text-danger" })
+
+        @Html.Label("password", "Password", new { @style = "color: black;" })
+        @Html.Password("password", null, new { @class = "form-control", placeholder = "Password" })
+        @Html.ValidationMessage("password", "", new { @class = "text-danger" })
+
+        <button type="submit" class="btn-submit">Login</button>
+    }
+</div>

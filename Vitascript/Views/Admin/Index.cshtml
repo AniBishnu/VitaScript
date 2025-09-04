@@ -1,0 +1,238 @@
+﻿@model Vitascript.Models.User
+@using Newtonsoft.Json
+@using Vitascript.ViewModel;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Admin CSS/Index.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Admin")">Home</a>
+
+            <div class="dropdown">
+                <a href="#">Manage Users</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("Users", "Admin")">All Users</a>
+                    <a href="@Url.Action("DoctorTypes", "Admin")">Doctor Types</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">Manage Medicines</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("GenericMedicines", "Admin")">Generic Medicines</a>
+                    <a href="@Url.Action("BrandedMedicines", "Admin")">Branded Medicines</a>
+                    <a href="@Url.Action("Brands", "Admin")">Brands</a>
+                </div>
+            </div>
+
+            <a href="@Url.Action("Prescriptions", "Admin")">Prescriptions</a>
+            <a href="@Url.Action("Transactions", "Admin")">Transactions</a> 
+            <a href="@Url.Action("AdminProfile", "Admin")">Profile</a>
+        </div>
+
+        <div class="DivBody">
+            <h2 class="topHeader">Welcome, Admin @Model.Name</h2>
+
+            <div class="dashboard-cards">
+                <div class="card">
+                    <i class="fas fa-user-md"></i>
+                    <h3>@ViewBag.TotalDoctors</h3>
+                    <p>Total Doctors</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-procedures"></i>
+                    <h3>@ViewBag.TotalPatients</h3>
+                    <p>Total Patients</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-clinic-medical"></i>
+                    <h3>@ViewBag.TotalPharmacies</h3>
+                    <p>Total Pharmacies</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-pills"></i>
+                    <h3>@ViewBag.TotalGenericMedicines</h3>
+                    <p>Generic Medicines</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-industry"></i>
+                    <h3>@ViewBag.TotalBrands</h3>
+                    <p>Medicine Brands</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-capsules"></i>
+                    <h3>@ViewBag.TotalBrandMedicines</h3>
+                    <p>Branded Medicines</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-file-medical-alt"></i>
+                    <h3>@ViewBag.TotalPrescriptions</h3>
+                    <p>Total Prescriptions</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>@ViewBag.TotalTransactions</h3>
+                    <p>Total Transactions</p>
+                </div>
+            </div>
+
+            <h4>Monthly Sales</h4>
+            <div>
+                <canvas id="monthlySalesChart" width="400" height="100"></canvas>
+            </div>
+
+
+            <div class="dashboard-charts" style="display:flex; gap:40px; flex-wrap: wrap;">
+                <div class="chart-placeholder" style="flex:1; min-width:150px;">
+                    <h4>Medicine Trend (Most Sold)</h4>
+                    <canvas id="medicineTrendChart" width="500" height="500"></canvas>
+                </div>
+
+                <div class="chart-placeholder" style="flex:1; min-width:300px;">
+                    <h4>Medicine Trend (Most Prescribed medicines)</h4>
+                    <canvas id="MostPrescribedmedicineChart" width="500" height="500"></canvas>
+                </div>
+            </div>
+
+
+
+
+        </div>
+    </div>
+</body>
+
+<script>
+        const monthlyCtx = document.getElementById('monthlySalesChart').getContext('2d');
+
+    new Chart(monthlyCtx, {
+        type: 'bar',
+        data: {
+            labels: @Html.Raw(JsonConvert.SerializeObject(
+                ((List<DailySalesVM>)ViewBag.DailySales).Select(ds => ds.Date.ToString("yyyy-MM-dd")).ToList()
+            )),
+            datasets: [{
+                label: 'Date-wise Sales in Taka',
+                data: @Html.Raw(JsonConvert.SerializeObject(
+                    ((List<DailySalesVM>)ViewBag.DailySales).Select(ds => ds.TotalSales).ToList()
+                )),
+                backgroundColor: '#fca311',
+                borderColor: '#04091e',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return '৳' + value;
+                        }
+                    }
+                },
+                x: {
+                    ticks: {
+                        autoSkip: true,
+                        maxTicksLimit: 10
+                    }
+                }
+            }
+        }
+    });
+
+const medicineCtx = document.getElementById('medicineTrendChart').getContext('2d');
+
+new Chart(medicineCtx, {
+    type: 'pie',
+    data: {
+        labels: @Html.Raw(JsonConvert.SerializeObject(
+                ((List<MostSoldMedicineVM>)ViewBag.MostSoldMedicines).Select(m => m.Name).ToList()
+            )),
+
+        datasets: [{
+            label: 'Most Sold Medicines',
+            data: @Html.Raw(JsonConvert.SerializeObject(
+                ((List<MostSoldMedicineVM>)ViewBag.MostSoldMedicines).Select(m => m.TotalSold).ToList()
+            )),
+            backgroundColor: [
+                '#fca311',
+                '#04091e',
+                '#ff6384',
+                '#36a2eb',
+                '#cc65fe',
+                '#ffce56',
+                '#3cba9f',
+                '#e8c3b9',
+                '#c45850'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: false, 
+        maintainAspectRatio: false, 
+        plugins: {
+            legend: {
+                position: 'right',
+                labels: {
+                    boxWidth: 20,
+                    padding: 10
+                }
+            }
+        }
+    }
+
+});
+
+const prescribedCtx = document.getElementById('MostPrescribedmedicineChart').getContext('2d');
+
+    new Chart(prescribedCtx, {
+        type: 'pie',
+        data: {
+            labels: @Html.Raw(JsonConvert.SerializeObject(
+                ((List<MostSoldMedicineVM>)ViewBag.MostPrescribedMedicines).Select(m => m.Name).ToList()
+            )),
+            datasets: [{
+                label: 'Most Prescribed Medicines',
+                data: @Html.Raw(JsonConvert.SerializeObject(
+                    ((List<MostSoldMedicineVM>)ViewBag.MostPrescribedMedicines).Select(m => m.TotalSold).ToList()
+                )),
+                backgroundColor: [
+                    '#fca311',
+                    '#04091e',
+                    '#ff6384',
+                    '#36a2eb',
+                    '#cc65fe',
+                    '#ffce56',
+                    '#3cba9f',
+                    '#e8c3b9',
+                    '#c45850'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false, 
+            maintainAspectRatio: false, 
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        boxWidth: 20,
+                        padding: 10
+                    }
+                }
+            }
+        }
+
+    });
+</script>

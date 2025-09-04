@@ -1,0 +1,154 @@
+﻿@model Vitascript.ViewModel.PayBillVM
+@{
+    ViewBag.Title = "paybill";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Pharmacy")">Home</a>
+            <a href="@Url.Action("SellMedicine", "Pharmacy")">Sell Medicines</a>
+            <a href="@Url.Action("Inventory", "Pharmacy")">Inventory</a>
+            <a href="@Url.Action("Sales", "Pharmacy")">Sales</a>
+            <a href="@Url.Action("PharmacyProfile", "Pharmacy")">Profile</a>
+        </div>
+        <div class="DivBody">
+            <div class="filter-dropdown">
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <p class="error-message">@ViewBag.ErrorMessage</p>
+                }
+            </div>
+            <div class="payment-wrapper">
+                <div class="payment-section">
+                    <h3>Bill Payment</h3>
+                    @using (Html.BeginForm("ConfirmPayment", "Pharmacy", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        for (int i = 0; i < Model.CartItems.Count; i++)
+                        {
+                            @Html.Hidden($"CartItems[{i}].PrescribedMedicineId", Model.CartItems[i].PrescribedMedicineId)
+                            @Html.Hidden($"CartItems[{i}].BrandedName", Model.CartItems[i].BrandedName)
+                            @Html.Hidden($"CartItems[{i}].GenericName", Model.CartItems[i].GenericName)
+                            @Html.Hidden($"CartItems[{i}].Quantity", Model.CartItems[i].Quantity)
+                            @Html.Hidden($"CartItems[{i}].UnitPrice", Model.CartItems[i].UnitPrice)
+                            @Html.Hidden($"CartItems[{i}].BrandedMedicineId", Model.CartItems[i].BrandedMedicineId)
+                        }
+
+                        <p>Payment options</p>
+                        <p>
+                            @foreach (var pt in Model.PaymentOptions)
+                            {
+                                <label>
+                                    <input type="radio" name="SelectedPaymentTypeId" value="@pt.Id" /> @pt.PaymentName
+                                </label>
+                            }
+                        </p>
+
+                        <input type="hidden" name="PrescriptionId" value="@Model.PrescriptionId" />
+                        <input type="hidden" name="PatientId" value="@Model.PatientId" />
+                        <div class="mobile-input">
+                            <input type="text" name="MobileNumber" class="form-control" placeholder="Mobile number" required />
+                        </div>
+
+                        <button type="submit" class="action-button">Paybill</button>
+                    }
+                </div>
+
+                <!-- Cart Summary -->
+                <div class="cart-summary">
+                    <h3>Cart summary</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Medicine name</th><th>Price</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.CartItems)
+                            {
+                                <tr>
+                                    <td><strong>@item.BrandedName</strong><br /><small>@item.GenericName</small><br /><small>@item.PrescribedMedicineId</small><br />x @item.Quantity</td>
+                                    <td>@item.TotalPrice.ToString("0.00") taka<br /><small>@item.UnitPrice.ToString("0.00") (Unit)</small></td>
+                                </tr>
+                            }
+                            <tr><td class="summary-label">Subtotal</td><td class="summary-value">@Model.GrandTotal.ToString("0.00") taka</td></tr>
+                            <tr><td>Taxes</td><td>0.00</td></tr>
+                            <tr><td class="summary-label">Grand total</td><td class="summary-value">@Model.GrandTotal.ToString("0.00") taka</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+<style>
+    .payment-wrapper {
+        display: flex;
+        gap: 20px; /* space between the sections */
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    .action-button {
+        background-color: #fca311;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .payment-section {
+        width: 55%;
+        padding: 25px;
+        border-radius: 10px;
+    }
+
+    .cart-summary {
+        width: 40%;
+    }
+
+    .form-control {
+        padding: 8px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        width: 100%;
+    }
+
+    input[type="radio"] {
+        margin-right: 6px;
+    }
+
+    label {
+        font-weight: 500;
+        margin-right: 10px;
+    }
+
+    .mobile-input {
+        margin: 20px 0;
+    }
+
+    .cart-summary table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .cart-summary th, .cart-summary td {
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .summary-label {
+        font-weight: bold;
+    }
+
+    .summary-value {
+        text-align: right;
+        font-weight: bold;
+    }
+</style>

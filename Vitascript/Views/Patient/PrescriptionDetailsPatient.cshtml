@@ -1,0 +1,68 @@
+﻿@model Vitascript.ViewModel.PatientDetailsViewModel
+
+@{
+    ViewBag.Title = "Prescription Details";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Prescription.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<div class="MainWrapper">
+    <div class="NavdivWrapper">
+        <a href="@Url.Action("Index", "Patient")">Home</a>
+        <a href="@Url.Action("BookAppointment", "Patient")">Book Appointment</a>
+        <a href="@Url.Action("PrescriptionListPatient", "Patient")">My Prescriptions</a>
+        <a href="@Url.Action("PProfile", "Patient")">Profile</a>
+    </div>
+
+    <div class="DivBody details-container">
+        <div class="patient-header">
+            <div class="patient-info">
+                <i class="fa-solid fa-user-injured fa-7x" style="color: #04091e; background-color: white; padding: 20px; border-radius: 10px;"></i>
+                <div class="patient-text">
+                   <p>
+                        <strong>Prescription Code:</strong>
+                        <strong>@string.Join(", ", Model.Prescriptions.Select(p => p.PrescriptionCode))</strong>
+                    </p>
+                    <p>
+                        <strong>Prescribed By:</strong>
+                        <strong>@string.Join(", ", Model.Prescriptions.Select(p => "Dr. " + p.DoctorName))</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="section-title">Prescribed Medicines</div>
+            <table class="prescription-table">
+                <thead>
+                    <tr>
+                        <th>Medicine Name</th>
+                        <th>Dose</th>
+                        <th>Duration (Days)</th>
+                        <th>Quantity</th>
+                        <th>Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var prescription in Model.Prescriptions)
+                    {
+                        foreach (var med in prescription.PrescribedMedicines)
+                        {
+                            <tr>
+                                <td>@med.GenericMedicineName</td>
+                                <td>@med.Dose</td>
+                                <td>@med.Duration</td>
+                                <td>@med.TotalQuantity</td>
+                                <td>@med.Notes</td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

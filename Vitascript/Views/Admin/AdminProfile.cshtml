@@ -1,0 +1,61 @@
+﻿@model Vitascript.Models.User
+
+@{
+    ViewBag.Title = "Admin Profile";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Profile.css" />
+
+<div class="MainWrapper">
+    <div class="NavdivWrapper">
+        <a href="@Url.Action("Index", "Admin")">Home</a>
+
+        <div class="dropdown">
+            <a href="#">Manage Users</a>
+            <div class="dropdown-content">
+                <a href="@Url.Action("Users", "Admin")">All Users</a>
+                <a href="@Url.Action("DoctorTypes", "Admin")">Doctor Types</a>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <a href="#">Manage Medicines</a>
+            <div class="dropdown-content">
+                <a href="@Url.Action("GenericMedicines", "Admin")">Generic Medicines</a>
+                <a href="@Url.Action("BrandedMedicines", "Admin")">Branded Medicines</a>
+                <a href="@Url.Action("Brands", "Admin")">Brands</a>
+            </div>
+        </div>
+
+        <a href="@Url.Action("Prescriptions", "Admin")">Prescriptions</a>
+        <a href="@Url.Action("Transactions", "Admin")">Transactions</a> 
+        <a href="@Url.Action("AdminProfile", "Admin")">Profile</a>
+    </div>
+
+    <div class="DivBody">
+        <div class="profile-container">
+            <div class="profile-left">
+                <i class="fas fa-user-shield fa-10x doctor-icon"></i>
+            </div>
+
+            <div class="profile-right">
+                <div class="profile-header">
+                    <div>
+                        <h1 class="doctor-name">@Model.Name</h1>
+                        <h4 class="doctor-specialty">Administrator</h4>
+                    </div>
+                </div>
+                <hr />
+                <div class="doctor-info">
+                    <p><strong>Email:</strong> @Model.Email</p>
+                    <p><strong>DOB:</strong> @Model.DOB.ToString("yyyy-MM-dd")</p>
+                    <p><strong>Phone:</strong> @Model.Phone</p>
+                    <p><strong>Address:</strong> @Model.Address, @Model.City</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

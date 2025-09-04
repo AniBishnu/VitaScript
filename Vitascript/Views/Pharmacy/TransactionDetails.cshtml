@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Vitascript.Models.MedicineTransaction>
+@{
+    ViewBag.Title = "TransactionDetails";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Pharmacy")">Home</a>
+            <a href="@Url.Action("SellMedicine", "Pharmacy")">Sell Medicines</a>
+            <a href="@Url.Action("Inventory", "Pharmacy")">Inventory</a>
+            <a href="@Url.Action("Sales", "Pharmacy")">Sales</a>
+            <a href="@Url.Action("PharmacyProfile", "Pharmacy")">Profile</a>
+        </div>
+        <div class="DivBody">
+            <div class="filter-dropdown">
+
+            </div>
+            <div style="text-align:center; font-weight:700;">
+                <h2>TransactionDetails</h2>
+                <h2> Transaction ID:
+                    @foreach (var transaction in Model)
+                    {@transaction.Payment.TransactionId break;}</h2>
+            
+            </div>
+            
+            <table class="patient-table">
+                <thead>
+                    <tr>
+                        <th>Generic Name</th>
+                        <th>Branded Name</th>
+                        <th>Brand</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var transaction in Model)
+                    {
+                        var generic = transaction.PrescribedMedicine?.GenericMedicine;
+                        var branded = ViewData[$"branded_{transaction.Id}"] as Vitascript.Models.BrandedMedicine;
+
+                        <tr>
+                            <td>@generic.Name</td>
+                            <td>@branded.MedicineName </td>
+                            <td>@branded.Brand.Name </td>
+                            <td>@transaction.QuantityPurchased</td>
+                            <td>@transaction.Price</td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+</body>
+
+<style>
+    .action-button {
+        background-color: #fca311;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>
+

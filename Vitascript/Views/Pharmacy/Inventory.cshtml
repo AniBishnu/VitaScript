@@ -1,0 +1,139 @@
+﻿@model List<Vitascript.ViewModel.PharmacyInventoryViewModel>
+
+@{
+    ViewBag.Title = "Inventory";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Index.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Pharmacy")">Home</a>
+            <a href="@Url.Action("SellMedicine", "Pharmacy")">Sell Medicines</a>
+            <a href="@Url.Action("Inventory", "Pharmacy")">Inventory</a>
+            <a href="@Url.Action("Sales", "Pharmacy")">Sales</a>
+            <a href="@Url.Action("PharmacyProfile", "Pharmacy")">Profile</a>
+        </div>
+        <div class="DivBody">
+            <div class="filter-dropdown">
+                <label for="filterSelect">Filter by Brand:</label>
+                <select id="filterSelect">
+                    <option value="All">All</option>
+                    @foreach (var brand in Model.Select(m => m.BrandName).Distinct())
+                    {
+                        <option value="@brand">@brand</option>
+                    }
+                </select>
+
+            </div>
+
+            <div class="header-wrapper">
+                <h2>All Branded Medicines</h2>
+                <a href="@Url.Action("AddPharmacyMedicine", "Pharmacy")" class="btn-add-user">
+                    <i class="fas fa-plus-circle"></i> Add more Medicines
+                </a>
+            </div>
+
+            <div class="patient-list" id="medList">
+                <table class="patient-table">
+                    <thead>
+                        <tr>
+                            <th>Medicine Name</th>
+                            <th>Brand</th>
+                            <th>Generic Name</th>
+                            <th>Buying Price (Taka)</th>
+                            <th>MRP (Taka)</th>
+                            <th>Available Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var med in Model)
+                        {
+                            <tr data-brand="@med.BrandName">
+                                <td>@med.MedicineName</td>
+                                <td>@med.BrandName</td>
+                                <td>@med.GenericName</td>
+                                <td>@med.BuyingPrice</td>
+                                <td>@med.MRP</td>
+                                <td>@med.QuantityAvailable</td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+<script>
+    document.getElementById("filterSelect").addEventListener("change", function () {
+        const selectedBrand = this.value;
+        const rows = document.querySelectorAll(".patient-table tbody tr");
+
+        rows.forEach(row => {
+            const brand = row.getAttribute("data-brand");
+            if (selectedBrand === "All" || brand === selectedBrand) {
+                row.style.display = "table-row";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+</script>
+
+
+<style>
+    .header-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .btn-add-user {
+        background-color: #04091e;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-add-user:hover {
+            background-color: #fca311;
+            color: #04091e;
+        }
+
+
+    .action-button {
+        background-color: #fca311;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .Dlt-button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+</style>

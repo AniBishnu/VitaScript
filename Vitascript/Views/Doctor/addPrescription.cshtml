@@ -1,0 +1,97 @@
+﻿@model Vitascript.DTOs.CreatePrescriptionDTO
+@{
+    ViewBag.Title = "addPrescription";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Prescription.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+
+<div class="MainWrapper">
+    <div class="NavdivWrapper">
+        <a href="@Url.Action("Index", "Doctor")">Home</a>
+        <a href="@Url.Action("MyPatients", "Doctor")">My patients</a>
+        <a href="@Url.Action("PrescriptionList", "Doctor")">Prescriptions</a>
+        <a href="@Url.Action("DProfile", "Doctor")">Profile</a>
+    </div>
+
+    <div class="DivBody details-container">
+        @using (Html.BeginForm("CreatePrescription", "Doctor", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.PatientId)
+            @Html.HiddenFor(m => m.DoctorId)
+
+            if (TempData["Error"] != null)
+            {
+                @TempData["Error"]
+            }
+            <div class="patient-header">
+                <div class="patient-info">
+                    <i class="fa-solid fa-user-injured fa-7x" style="color: #04091e; background-color: white; padding: 20px; border-radius: 10px;"></i>
+                    <div class="patient-text">
+                        <h2>Patient</h2>
+                        <p><strong>Id:</strong> @Model.PatientId</p>
+                        <p><strong>Doctor:</strong> @Model.DoctorId</p>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="write-prescription-btn">Upload prescription</button>
+                </div>
+            </div>
+
+            <div>
+                <div class="section-title">Medical History</div>
+                <div class="medical-history-box">
+                    @Html.TextAreaFor(m => m.MedicalHistoryDescription, new { @placeholder = "Enter medical history description here..." })
+                </div>
+            </div>
+
+            <div>
+                <div class="section-title">Medicines</div>
+                <div id="medicine-list">
+                    <div class="Medicine-container">
+                        @Html.DropDownList("PrescribedMedicines[0].GenericMedicineId", ViewBag.GenericMedicines as List<SelectListItem>, "Select Medicine", new { @class = "form-control" })
+                        <input name="PrescribedMedicines[0].Dose" placeholder="Dose (e.g., 1+0+1)" />
+                        <input name="PrescribedMedicines[0].Duration" placeholder="Duration in days (e.g., 7)" />
+                        <input name="PrescribedMedicines[0].TotalQuantity" placeholder="Total Quantity (e.g., 14)" />
+                        <textarea name="PrescribedMedicines[0].Notes" placeholder="Additional Notes"></textarea>
+                    </div>
+                </div>
+                <button type="button" id="add-medicine" class="write-prescription-btn">Add more medicine</button>
+            </div>
+
+        }
+    </div>
+</div>
+<script>
+    let index = 1;
+    const medicineOptions = `@Html.Raw(Json.Encode(ViewBag.GenericMedicines))`;
+
+    document.getElementById("add-medicine").addEventListener("click", function () {
+        const medicines = JSON.parse(medicineOptions);
+        let optionsHtml = medicines.map(m => `<option value="${m.Value}">${m.Text}</option>`).join('');
+
+        const container = document.createElement("div");
+        container.className = "Medicine-container";
+        container.innerHTML = `
+            <select name="PrescribedMedicines[${index}].GenericMedicineId" class="form-control">
+                <option>Select Medicine</option>
+                ${optionsHtml}
+            </select>
+            <input name="PrescribedMedicines[${index}].Dose" placeholder="Dose" />
+            <input name="PrescribedMedicines[${index}].Duration" placeholder="Duration" />
+            <input name="PrescribedMedicines[${index}].TotalQuantity" placeholder="Total Quantity" />
+            <textarea name="PrescribedMedicines[${index}].Notes" placeholder="Notes"></textarea>
+        `;
+        document.getElementById("medicine-list").appendChild(container);
+        index++;
+    });
+</script>

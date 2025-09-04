@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Vitascript.Models.Payment>
+@{
+    ViewBag.Title = "Sales";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Pharmacy")">Home</a>
+            <a href="@Url.Action("SellMedicine", "Pharmacy")">Sell Medicines</a>
+            <a href="@Url.Action("Inventory", "Pharmacy")">Inventory</a>
+            <a href="@Url.Action("Sales", "Pharmacy")">Sales</a>
+            <a href="@Url.Action("PharmacyProfile", "Pharmacy")">Profile</a>
+        </div>
+        <div class="DivBody">
+            <div class="filter-dropdown">
+
+            </div>
+            <h2>Transaction List</h2>
+            <br />
+
+            <div class="patient-list" id="patientList">
+                <table class="patient-table">
+                    <thead>
+                        <tr>
+                            <th>TransactionID</th>
+                            <th>Prescription ID</th>
+                            <th>Amount</th>
+                            <th>PaymentDate</th>
+                            <th>Payment type</th>
+                            <th>Patient Name</th>
+                            <th>Mobile Number</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var prescription in Model)
+                            {
+                                <tr>
+                                    <td>@prescription.TransactionId</td>
+                                    <td>@prescription.Prescription.PrescriptionCode</td>
+                                    <td>@prescription.Amount</td>
+                                    <td>@prescription.PaymentDate.ToString("dd MMM yyyy")</td>
+                                    <td>@prescription.PaymentType.PaymentName</td>
+                                    <td>@prescription.Patient.Name</td>
+                                    <td>@prescription.Mobilenumber</td>
+                                    <td>
+                                        <a class="action-button" href="@Url.Action("TransactionDetails", "Pharmacy", new { paymentId = prescription.Id})">
+                                            See details
+                                        </a>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" style="text-align: center;">No prescriptions found.</td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<style>
+    .action-button {
+        background-color: #fca311;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>

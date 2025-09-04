@@ -1,0 +1,52 @@
+﻿@model Vitascript.DTOs.UserDTO
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Home CSS/UserAuth.css" />
+@if (ViewBag.Error != null)
+{
+    <script type="text/javascript">
+        alert('@ViewBag.Error');
+    </script>
+}
+
+<div class="form-container">
+    @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.LabelFor(m => m.Name, new { @style = "color: black;" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Name" })
+        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+
+        @Html.LabelFor(m => m.Password, new { @style = "color: black;" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+        @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+        @Html.LabelFor(m => m.Phone, new { @style = "color: black;" })
+        @Html.TextBoxFor(m => m.Phone, new { @class = "form-control", placeholder = "Phone" })
+        @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+
+        @Html.LabelFor(m => m.DOB, new { @style = "color: black;" })
+        @Html.TextBoxFor(m => m.DOB, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date", placeholder = "DOB" })
+        @Html.ValidationMessageFor(m => m.DOB, "", new { @class = "text-danger" })
+
+        @Html.LabelFor(m => m.Email, new { @style = "color: black;" })
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email", type = "email" })
+        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
+        @Html.LabelFor(m => m.City, new { @style = "color: black;" })
+        @Html.DropDownListFor(m => m.City, new SelectList(Enum.GetNames(typeof(Vitascript.DTOs.Location))), "-- Select City --", new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+
+        @Html.LabelFor(m => m.Address, new { @style = "color: black;" })
+        @Html.TextBoxFor(m => m.Address, new { @class = "form-control", placeholder = "Address" })
+        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+
+
+        <button type="submit" class="btn-submit">Register</button>
+    }
+</div>

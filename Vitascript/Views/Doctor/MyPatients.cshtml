@@ -1,0 +1,114 @@
+﻿@model List<Vitascript.Models.Patient>
+@{
+    ViewBag.Title = "My Patients";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Doctor CSS/Doctor.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Doctor")">Home</a>
+            <a href="@Url.Action("MyPatients", "Doctor")">My patients</a>
+            <a href="@Url.Action("PrescriptionList", "Doctor")">Prescriptions</a>
+            <a href="@Url.Action("DProfile", "Doctor")">Profile</a>
+        </div>
+        <div class="DivBody">
+
+            <!-- Dropdown Filter -->
+            <div class="filter-dropdown">
+                <label for="filterSelect">Filter Patients:</label>
+                <select id="filterSelect">
+                    <option value="All">All</option>
+                    <option value="Prescribed">Prescribed Patients</option>
+                    <option value="NonPrescribed">Non-Prescribed Patients</option>
+                </select>
+            </div>
+
+            <!-- Patient List -->
+            <div class="patient-list" id="patientList">
+                <table class="patient-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fa-solid fa-user-injured"></i> Name</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var p in Model)
+                        {
+                            var patient = p.PatientUser;
+                            bool wasPrescribed = p.Prescribed;
+
+                            <tr class="@(wasPrescribed ? "prescribed" : "nonprescribed")">
+                                <td>@patient.Name</td>
+                                <td>@patient.Address , @patient.City</td>
+                                <td>@patient.Phone</td>
+                                <td>
+                                    <span class="status-badge @(wasPrescribed ? "badge-prescribed" : "badge-nonprescribed")">
+                                        @(wasPrescribed ? "Prescribed" : "Not Prescribed")
+                                    </span>
+                                </td>
+                                <td class="action-buttons">
+                                    <a href="@Url.Action("PatientsDetails", "Doctor", new { patientId = p.PatientId })" class="action-button">Details</a>
+                                    @if (!wasPrescribed)
+                                    {
+                                        <a href="@Url.Action("addPrescription", "Doctor", new { patientId = patient.Id })" class="action-button">Prescribe</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+
+    </div>
+
+</body>
+<script>
+    document.getElementById("filterSelect").addEventListener("change", function () {
+        const value = this.value;
+        const rows = document.querySelectorAll(".patient-table tbody tr");
+
+        rows.forEach(row => {
+            const isPrescribed = row.classList.contains("prescribed");
+            const isNonPrescribed = row.classList.contains("nonprescribed");
+
+            // Show all rows by default
+            row.style.display = "table-row";
+
+            if (value === "Prescribed" && isNonPrescribed) {
+                row.style.display = "none";
+            } else if (value === "NonPrescribed" && isPrescribed) {
+                row.style.display = "none";
+            }
+        });
+    });
+</script>
+
+
+
+<style>
+    .action-button {
+        background-color: #fca311;
+        color: black;
+        border: none;
+        padding: 6px 12px;
+        font-size: 14px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+</style>

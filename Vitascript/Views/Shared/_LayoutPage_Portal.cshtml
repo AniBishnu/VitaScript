@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width">
+    <title>@ViewBag.Title - Vitascript</title>
+   @* @Styles.Render("~/Content/css")*@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="@Url.Content("~/Content/Layout CSS/NavbarPortal.css")">
+
+</head>
+<body>
+    <div class="navWrapper">
+        <nav>
+            <div class="navDiv1">
+                <div class="navDiv2">
+                    <a href="@Url.Action("Index", "Home")">
+                        <img src="~/Images/logo_VS.png" alt="Logo" class="logo" />
+                    </a>
+                </div>
+                <hr />
+                <div class="navDiv3">
+                    <div class="navDiv4">
+                        <a href="@Url.Action("Doctors", "Home")">Doctorsss</a>
+                        <a href="@Url.Action("Pharmacies", "Home")">Pharmacies</a>
+                    </div>
+                    <div class="navDiv5">
+                        <input type="text" placeholder="Search doctors, pharmaciesss...." />
+                    </div>
+                    <div class="navDiv6">
+                        <a href="/medicines">Medicines</a>
+                        <a href="@Url.Action("Logout", "Home")">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div>
+        @RenderBody()
+        <hr />
+       
+    </div>
+
+
+    <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

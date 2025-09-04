@@ -1,0 +1,121 @@
+﻿@model Vitascript.Models.DoctorType
+@{
+    ViewBag.Title = "AddDoctorType";
+    Layout = "~/Views/Shared/_LayoutPage_Portal.cshtml";
+}
+
+<link rel="stylesheet" href="~/Content/Doctor CSS/MyPatients.css" />
+<link rel="stylesheet" href="~/Content/Admin CSS/Navbar.css" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet" />
+
+<body>
+    <div class="MainWrapper">
+        <div class="NavdivWrapper">
+            <a href="@Url.Action("Index", "Admin")">Home</a>
+
+            <div class="dropdown">
+                <a href="#">Manage Users</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("Users", "Admin")">All Users</a>
+                    <a href="@Url.Action("DoctorTypes", "Admin")">Doctor Types</a>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <a href="#">Manage Medicines</a>
+                <div class="dropdown-content">
+                    <a href="@Url.Action("GenericMedicines", "Admin")">Generic Medicines</a>
+                    <a href="@Url.Action("BrandedMedicines", "Admin")">Branded Medicines</a>
+                    <a href="@Url.Action("Brands", "Admin")">Brands</a>
+                </div>
+            </div>
+
+            <a href="@Url.Action("Prescriptions", "Admin")">Prescriptions</a>
+            <a href="@Url.Action("Transactions", "Admin")">Transactions</a> 
+            <a href="@Url.Action("AdminProfile", "Admin")">Profile</a>
+        </div>
+
+        <div class="DivBody">
+            <div class="filter-dropdown">
+
+            </div>
+            <h2 class="topHeader">@(Model != null && Model.Id > 0 ? "Update" : "Add") Doctor Type</h2>
+            @using (Html.BeginForm("CreateDoctorType", "Admin", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(x => x.Id)
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Name, htmlAttributes: new { @class = "control-label" })
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter doctor type name", title = "Doctor Type Name" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> @(Model != null && Model.Id > 0 ? "Update" : "Add") Doctor Type
+                </button>
+            }
+
+        </div>
+    </div>
+</body>
+
+<style>
+    .DivBody form {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .DivBody .form-group {
+        margin-bottom: 18px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .DivBody label.control-label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #222;
+        font-size: 1rem;
+    }
+
+    .DivBody input.form-control {
+        padding: 10px 12px;
+        font-size: 1rem;
+        border: 1.5px solid #ccc;
+        border-radius: 6px;
+        transition: border-color 0.25s ease;
+    }
+
+        .DivBody input.form-control:focus {
+            border-color: #fca311;
+            outline: none;
+            box-shadow: 0 0 6px rgba(252, 163, 17, 0.5);
+        }
+
+    .DivBody .text-danger {
+        color: #d9534f;
+        font-size: 0.85rem;
+        margin-top: 4px;
+    }
+
+    .DivBody button.btn {
+        width: 100%;
+        padding: 12px 0;
+        background-color: #04091e;
+        color: white;
+        font-weight: 600;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .DivBody button.btn:hover {
+            background-color: #fca311;
+            color: #04091e;
+        }
+
+</style>
